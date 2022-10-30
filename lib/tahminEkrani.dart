@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:sayi_tahmin_oyunu/SonucEkrani.dart';
 
 class tahminEkrani extends StatefulWidget {
-  const tahminEkrani({super.key});
-
   @override
   State<tahminEkrani> createState() => tahminEkraniState();
 }
@@ -21,6 +19,7 @@ class tahminEkraniState extends State<tahminEkrani> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     rasgeleSayi = Random().nextInt(101);
     print("Rasgele Sayı:$rasgeleSayi");
   }
@@ -43,6 +42,7 @@ class tahminEkraniState extends State<tahminEkrani> {
               style:
                   const TextStyle(color: Colors.deepOrangeAccent, fontSize: 30),
             ),
+
             // ignore: prefer_const_constructors
             Text(
               "Yardım : $yonlendirme",

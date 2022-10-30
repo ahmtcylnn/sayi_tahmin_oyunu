@@ -53,7 +53,7 @@ class _AnasayfaState extends State<Anasayfa> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const tahminEkrani()));
+                            builder: (context) => tahminEkrani()));
                   }),
                   child: const Text("Oyuna Başla"),
                   style: ElevatedButton.styleFrom(
