@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:sayi_tahmin_oyunu/SonucEkrani.dart';
@@ -6,10 +8,23 @@ class tahminEkrani extends StatefulWidget {
   const tahminEkrani({super.key});
 
   @override
-  State<tahminEkrani> createState() => _MyWidgetState();
+  State<tahminEkrani> createState() => tahminEkraniState();
 }
 
-class _MyWidgetState extends State<tahminEkrani> {
+class tahminEkraniState extends State<tahminEkrani> {
+  var tfTahmin = TextEditingController();
+  int rasgeleSayi = 0;
+  int kalanHak = 5;
+  String yonlendirme = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    rasgeleSayi = Random().nextInt(101);
+    print("Rasgele Sayı:$rasgeleSayi");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,13 +39,13 @@ class _MyWidgetState extends State<tahminEkrani> {
           children: <Widget>[
             // ignore: prefer_const_constructors
             Text(
-              "Kalan Hak: 4 ",
+              "Kalan Hak: $kalanHak ",
               style:
                   const TextStyle(color: Colors.deepOrangeAccent, fontSize: 30),
             ),
             // ignore: prefer_const_constructors
             Text(
-              "Yardım : Tahmini Azalt",
+              "Yardım : $yonlendirme",
               style: const TextStyle(color: Colors.white, fontSize: 24),
             ),
             // ignore: prefer_const_constructors
@@ -38,6 +53,7 @@ class _MyWidgetState extends State<tahminEkrani> {
               padding: const EdgeInsets.all(8.0),
               // ignore: prefer_const_constructors
               child: TextField(
+                controller: tfTahmin,
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
                 decoration: const InputDecoration(
@@ -56,10 +72,46 @@ class _MyWidgetState extends State<tahminEkrani> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: (() {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const sonucEkrani()));
+                    setState(() {
+                      kalanHak = kalanHak - 1;
+                      FocusScope.of(context).unfocus();
+                    });
+                    int tahmin = int.parse(tfTahmin.text);
+
+                    if (tahmin == rasgeleSayi) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => sonucEkrani(
+                                    sonuc: true,
+                                  )));
+
+                      return;
+                    }
+                    if (tahmin > rasgeleSayi) {
+                      setState(() {
+                        yonlendirme = "Tahmini Azalt";
+                      });
+                    }
+                    if (tahmin < rasgeleSayi) {
+                      setState(() {
+                        yonlendirme = "Tahmini Arttır";
+                      });
+                    }
+                    if (kalanHak == 0) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => sonucEkrani(
+                                    sonuc: false,
+                                  )));
+                    }
+                    tfTahmin.text = "";
+
+                    // Navigator.pushReplacement(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const sonucEkrani()));
                   }),
                   // ignore: sort_child_properties_last
                   child: const Text("TAHMİN ET"),
